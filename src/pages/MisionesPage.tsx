@@ -153,9 +153,12 @@ export default function MisionesPage() {
   return (
     <div className="min-h-[100dvh] bg-fondo pb-24 flex flex-col">
       {/* Header específico de Misiones */}
-      <header className="bg-azul text-white pt-6 pb-4 px-5 sticky top-0 z-50 rounded-b-[32px] shadow-sm mb-6">
-        <h1 className="text-3xl font-bold font-heading">Azul Connect</h1>
-        <p className="text-white/80 text-sm mt-1">Conectando corazones, transformando vidas</p>
+      <header className="bg-azul text-white pt-6 pb-4 px-5 sticky top-0 z-50 rounded-b-[32px] shadow-sm mb-6 relative overflow-hidden">
+        <img src="/images/img_1814-1.webp" alt="Fondo" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" />
+        <div className="relative z-10">
+          <h1 className="text-3xl font-bold font-heading">Azul Connect</h1>
+          <p className="text-white/80 text-sm mt-1">Conectando corazones, transformando vidas</p>
+        </div>
       </header>
 
       {/* Scrollable Calendar */}

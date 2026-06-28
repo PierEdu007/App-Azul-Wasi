@@ -25,21 +25,24 @@ export default function AprendePage() {
   return (
     <div className="min-h-[100dvh] bg-fondo pb-24 flex flex-col">
       {/* Search Header */}
-      <div className="bg-azul px-6 pt-8 pb-12">
-        <h2 className="font-heading font-bold text-3xl mb-1 text-white">Repositorio del Saber</h2>
-        <p className="text-white/80 text-sm mb-6">Aprende algo nuevo hoy para enseñar mañana</p>
-        
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-white/60" />
+      <div className="bg-azul px-6 pt-8 pb-12 relative overflow-hidden">
+        <img src="/images/img_1706-1.webp" alt="Fondo" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" />
+        <div className="relative z-10">
+          <h2 className="font-heading font-bold text-3xl mb-1 text-white">Repositorio del Saber</h2>
+          <p className="text-white/80 text-sm mb-6">Aprende algo nuevo hoy para enseñar mañana</p>
+          
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-white/60" />
+            </div>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-12 w-full p-4 bg-white/10 border border-white/20 rounded-2xl focus:bg-white/20 outline-none transition-all text-sm text-white placeholder-white/60"
+              placeholder="Busca un tutorial (ej. Formatear PC, Álgebra)..."
+            />
           </div>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-12 w-full p-4 bg-white/10 border border-white/20 rounded-2xl focus:bg-white/20 outline-none transition-all text-sm text-white placeholder-white/60"
-            placeholder="Busca un tutorial (ej. Formatear PC, Álgebra)..."
-          />
         </div>
       </div>
 

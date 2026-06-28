@@ -11,9 +11,12 @@ export default function DonarPage() {
   return (
     <div className="min-h-[100dvh] bg-azul flex flex-col pb-20">
       {/* Header */}
-      <div className="pt-6 pb-8 px-6 text-white">
-        <h2 className="font-heading font-bold text-3xl mb-1">Apoyo Directo</h2>
-        <p className="text-white/90">Tu granito de arena cambia vidas</p>
+      <div className="pt-6 pb-8 px-6 text-white relative overflow-hidden">
+        <img src="/images/img_1831-1.webp" alt="Fondo" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" />
+        <div className="relative z-10">
+          <h2 className="font-heading font-bold text-3xl mb-1">Apoyo Directo</h2>
+          <p className="text-white/90">Tu granito de arena cambia vidas</p>
+        </div>
       </div>
 
       {/* Main Content Area */}

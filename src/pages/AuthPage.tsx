@@ -41,8 +41,9 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-azul flex flex-col justify-center items-center p-4">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
+    <div className="min-h-screen bg-azul flex flex-col justify-center items-center p-4 relative overflow-hidden">
+      <img src="/images/img_1800.webp" alt="Fondo" className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay" />
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-up relative z-10">
         {/* Header */}
         <div className="bg-azul p-6 text-center text-white">
           <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
