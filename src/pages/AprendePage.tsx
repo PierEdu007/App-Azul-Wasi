@@ -4,12 +4,12 @@ import { Search, Clock } from 'lucide-react';
 const CATEGORIAS = ['Tecnología', 'Matemáticas', 'Idiomas', 'Habilidades'];
 
 const VIDEOS = [
-  { id: '1', title: 'Cómo usar Excel desde cero', category: 'Tecnología', duration: '2 min', ytId: 'qz0aGYrrlhU', icon: '📊' },
-  { id: '2', title: 'Formatear tu PC paso a paso', category: 'Tecnología', duration: '3 min', ytId: 'qz0aGYrrlhU', icon: '💻' },
-  { id: '3', title: 'Álgebra básica explicada', category: 'Matemáticas', duration: '4 min', ytId: 'qz0aGYrrlhU', icon: '🔢' },
-  { id: '4', title: 'Inglés conversacional', category: 'Idiomas', duration: '5 min', ytId: 'qz0aGYrrlhU', icon: '🗣️' },
-  { id: '5', title: 'Cómo hacer un CV perfecto', category: 'Habilidades', duration: '3 min', ytId: 'qz0aGYrrlhU', icon: '📄' },
-  { id: '6', title: 'PowerPoint profesional', category: 'Tecnología', duration: '4 min', ytId: 'qz0aGYrrlhU', icon: '🎨' },
+  { id: '1', title: 'Cómo usar Excel desde cero', category: 'Tecnología', duration: '99 min', ytId: 'eZPCVg4Jk00', icon: '📊' },
+  { id: '2', title: 'Formatear tu PC paso a paso', category: 'Tecnología', duration: '35 min', ytId: 'H2QU4p8f16U', icon: '💻' },
+  { id: '3', title: 'Álgebra básica explicada', category: 'Matemáticas', duration: '83 min', ytId: '_6uyQISZvBc', icon: '🔢' },
+  { id: '4', title: 'Inglés conversacional', category: 'Idiomas', duration: '48 min', ytId: 'leqSSYVxa1E', icon: '🗣️' },
+  { id: '5', title: 'Cómo hacer un CV perfecto', category: 'Habilidades', duration: '14 min', ytId: 'toYqGCBi1gM', icon: '📄' },
+  { id: '6', title: 'PowerPoint profesional', category: 'Tecnología', duration: '11 min', ytId: 'aQlTPUvVH5E', icon: '🎨' },
 ];
 
 export default function AprendePage() {
