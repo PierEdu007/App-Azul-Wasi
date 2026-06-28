@@ -1,15 +1,4 @@
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  Timestamp,
-  orderBy,
-} from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 
 export interface Visita {
   id?: string;
@@ -19,7 +8,7 @@ export interface Visita {
   bloque_horario: string;
   actividad_a_realizar: string;
   estado: 'Confirmado' | 'Cancelado';
-  created_at?: Timestamp;
+  created_at?: string;
 }
 
 export interface DiaBloqueado {
@@ -33,11 +22,14 @@ const DIAS_BLOQUEADOS_COLLECTION = 'dias_bloqueados';
 const CONFIG_COLLECTION = 'configuracion';
 
 export async function getConfig() {
-  const configRef = doc(db, CONFIG_COLLECTION, 'general');
-  const { getDoc } = await import('firebase/firestore');
-  const configSnap = await getDoc(configRef);
-  if (configSnap.exists()) {
-    return configSnap.data();
+  const { data, error } = await supabase
+    .from(CONFIG_COLLECTION)
+    .select('*')
+    .eq('id', 'general')
+    .single();
+
+  if (data && !error) {
+    return data;
   }
   // Default config
   return {
@@ -47,13 +39,14 @@ export async function getConfig() {
 }
 
 export async function getVisitasPorFecha(fecha: string): Promise<Visita[]> {
-  const q = query(
-    collection(db, VISITAS_COLLECTION),
-    where('fecha', '==', fecha),
-    where('estado', '==', 'Confirmado')
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Visita));
+  const { data, error } = await supabase
+    .from(VISITAS_COLLECTION)
+    .select('*')
+    .eq('fecha', fecha)
+    .eq('estado', 'Confirmado');
+    
+  if (error) throw error;
+  return data as Visita[];
 }
 
 export async function contarVisitasPorFecha(fecha: string): Promise<number> {
@@ -75,46 +68,68 @@ export async function crearVisita(datos: Omit<Visita, 'id' | 'estado' | 'created
     throw new Error('Este día está bloqueado y no acepta visitas.');
   }
 
-  const docRef = await addDoc(collection(db, VISITAS_COLLECTION), {
-    ...datos,
-    estado: 'Confirmado',
-    created_at: Timestamp.now(),
-  });
+  const { data, error } = await supabase
+    .from(VISITAS_COLLECTION)
+    .insert([{
+      ...datos,
+      estado: 'Confirmado',
+      created_at: new Date().toISOString()
+    }])
+    .select('id')
+    .single();
 
-  return docRef.id;
+  if (error) throw error;
+  return data.id;
 }
 
 export async function getDiasBloqueados(): Promise<DiaBloqueado[]> {
-  const snapshot = await getDocs(collection(db, DIAS_BLOQUEADOS_COLLECTION));
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as DiaBloqueado));
+  const { data, error } = await supabase
+    .from(DIAS_BLOQUEADOS_COLLECTION)
+    .select('*');
+    
+  if (error) throw error;
+  return data as DiaBloqueado[];
 }
 
 export async function bloquearDia(fecha: string, motivo: string): Promise<string> {
-  const docRef = await addDoc(collection(db, DIAS_BLOQUEADOS_COLLECTION), {
-    fecha,
-    motivo,
-  });
-  return docRef.id;
+  const { data, error } = await supabase
+    .from(DIAS_BLOQUEADOS_COLLECTION)
+    .insert([{ fecha, motivo }])
+    .select('id')
+    .single();
+    
+  if (error) throw error;
+  return data.id;
 }
 
 export async function desbloquearDia(id: string): Promise<void> {
-  await deleteDoc(doc(db, DIAS_BLOQUEADOS_COLLECTION, id));
+  const { error } = await supabase
+    .from(DIAS_BLOQUEADOS_COLLECTION)
+    .delete()
+    .eq('id', id);
+    
+  if (error) throw error;
 }
 
 export async function getVisitasSemana(startDate: string, endDate: string): Promise<Visita[]> {
-  const q = query(
-    collection(db, VISITAS_COLLECTION),
-    where('fecha', '>=', startDate),
-    where('fecha', '<=', endDate),
-    orderBy('fecha', 'asc')
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Visita));
+  const { data, error } = await supabase
+    .from(VISITAS_COLLECTION)
+    .select('*')
+    .gte('fecha', startDate)
+    .lte('fecha', endDate)
+    .order('fecha', { ascending: true });
+    
+  if (error) throw error;
+  return data as Visita[];
 }
 
 export async function cancelarVisita(id: string): Promise<void> {
-  const { updateDoc } = await import('firebase/firestore');
-  await updateDoc(doc(db, VISITAS_COLLECTION, id), { estado: 'Cancelado' });
+  const { error } = await supabase
+    .from(VISITAS_COLLECTION)
+    .update({ estado: 'Cancelado' })
+    .eq('id', id);
+    
+  if (error) throw error;
 }
 
 export async function getDiasConVisitas(mes: number, anio: number): Promise<Map<string, number>> {
@@ -122,17 +137,18 @@ export async function getDiasConVisitas(mes: number, anio: number): Promise<Map<
   const endDay = new Date(anio, mes, 0).getDate();
   const endDate = `${anio}-${String(mes).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`;
 
-  const q = query(
-    collection(db, VISITAS_COLLECTION),
-    where('fecha', '>=', startDate),
-    where('fecha', '<=', endDate),
-    where('estado', '==', 'Confirmado')
-  );
-  const snapshot = await getDocs(q);
+  const { data, error } = await supabase
+    .from(VISITAS_COLLECTION)
+    .select('fecha')
+    .gte('fecha', startDate)
+    .lte('fecha', endDate)
+    .eq('estado', 'Confirmado');
+    
+  if (error) throw error;
+
   const map = new Map<string, number>();
-  snapshot.docs.forEach((d) => {
-    const fecha = d.data().fecha;
-    map.set(fecha, (map.get(fecha) || 0) + 1);
+  data.forEach((d) => {
+    map.set(d.fecha, (map.get(d.fecha) || 0) + 1);
   });
   return map;
 }

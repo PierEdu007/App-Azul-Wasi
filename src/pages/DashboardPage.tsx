@@ -342,7 +342,7 @@ export default function DashboardPage() {
                         <tbody className="divide-y divide-gris-borde">
                           {donaciones.map((d) => (
                             <tr key={d.id} className="hover:bg-gray-50/50 transition-colors">
-                              <td className="px-5 py-4 text-sm text-gris-texto whitespace-nowrap">{d.fecha?.toDate?.()?.toLocaleDateString('es-PE') || '-'}</td>
+                              <td className="px-5 py-4 text-sm text-gris-texto whitespace-nowrap">{d.fecha ? new Date(d.fecha).toLocaleDateString('es-PE') : '-'}</td>
                               <td className="px-5 py-4 text-sm font-medium text-gray-700">{d.nombre_donante}</td>
                               <td className="px-5 py-4 text-sm font-bold text-verde-dark">S/ {d.monto?.toFixed(2)}</td>
                               <td className="px-5 py-4 hidden sm:table-cell">

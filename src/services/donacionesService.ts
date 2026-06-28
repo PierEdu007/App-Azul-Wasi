@@ -1,27 +1,17 @@
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  orderBy,
-  Timestamp,
-  limit,
-} from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 
 export interface Donacion {
   id?: string;
   nombre_donante: string;
   monto: number;
   metodo: 'Yape' | 'Plin' | 'Transferencia';
-  boucher_url?: string; // We'll store the base64 compressed data here
-  fecha: Timestamp;
+  boucher_url?: string;
+  fecha: string;
   mensaje?: string;
 }
 
 const DONACIONES_COLLECTION = 'donaciones';
 
-// Helper function to compress images client-side to prevent Firestore document size limit issues (1MB max)
 function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,7 +21,7 @@ function compressImage(file: File): Promise<string> {
       img.src = event.target?.result as string;
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 600; // Keep it small
+        const MAX_WIDTH = 600;
         const MAX_HEIGHT = 600;
         let width = img.width;
         let height = img.height;
@@ -56,7 +46,7 @@ function compressImage(file: File): Promise<string> {
           return;
         }
         ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // 50% quality JPEG is usually ~20-40KB
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
         resolve(dataUrl);
       };
       img.onerror = (err) => reject(err);
@@ -79,23 +69,29 @@ export async function registrarDonacion(
     }
   }
 
-  const docRef = await addDoc(collection(db, DONACIONES_COLLECTION), {
-    ...datos,
-    boucher_url,
-    fecha: Timestamp.now(),
-  });
+  const { data, error } = await supabase
+    .from(DONACIONES_COLLECTION)
+    .insert([{
+      ...datos,
+      boucher_url,
+      fecha: new Date().toISOString()
+    }])
+    .select('id')
+    .single();
 
-  return docRef.id;
+  if (error) throw error;
+  return data.id;
 }
 
 export async function getDonaciones(maxResults = 50): Promise<Donacion[]> {
-  const q = query(
-    collection(db, DONACIONES_COLLECTION),
-    orderBy('fecha', 'desc'),
-    limit(maxResults)
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Donacion));
+  const { data, error } = await supabase
+    .from(DONACIONES_COLLECTION)
+    .select('*')
+    .order('fecha', { ascending: false })
+    .limit(maxResults);
+    
+  if (error) throw error;
+  return data as Donacion[];
 }
 
 export async function getDonacionesPorMes(): Promise<Map<string, number>> {
@@ -103,7 +99,7 @@ export async function getDonacionesPorMes(): Promise<Map<string, number>> {
   const map = new Map<string, number>();
   
   donaciones.forEach((d) => {
-    const date = d.fecha.toDate();
+    const date = new Date(d.fecha);
     const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
     map.set(key, (map.get(key) || 0) + d.monto);
   });
