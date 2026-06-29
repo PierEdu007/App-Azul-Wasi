@@ -4,7 +4,6 @@ import {
   getMisionesSemana,
   getMisReservas, 
   asumirMision, 
-  seedMisionesMock,
   type Mision, 
   type ReservaMision 
 } from '@/services/misionesService';
