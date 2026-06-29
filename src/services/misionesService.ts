@@ -25,24 +25,37 @@ const RESERVAS_COLLECTION = 'reservas_misiones';
 
 // Seed initial data if empty (for prototype purposes)
 export async function seedMisionesMock() {
-  const { data, error } = await supabase.from(MISIONES_COLLECTION).select('id').limit(1);
-  
-  // If table doesn't exist or is empty
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const currentDay = today.getDay();
+  const diffToMonday = currentDay === 0 ? -6 : 1 - currentDay;
+  const monday = new Date(today);
+  monday.setDate(today.getDate() + diffToMonday);
+
+  const startStr = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+
+  const { data, error } = await supabase
+    .from(MISIONES_COLLECTION)
+    .select('id')
+    .gte('fecha', startStr)
+    .limit(1);
+    
   if (error || !data || data.length === 0) {
-    const today = new Date();
     const days = Array.from({ length: 6 }).map((_, i) => {
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      return d.toISOString().split('T')[0];
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     });
 
     const mockMisiones: Omit<Mision, 'id'>[] = [
-      { titulo: 'Reforzamiento de Matemáticas', descripcion: 'Apoyo en álgebra básica', categoria: 'Educación', fecha: days[0], hora: '3:00 PM', cupos_totales: 5, cupos_disponibles: 3 },
+      { titulo: 'Reforzamiento Escolar', descripcion: 'Apoyo en álgebra básica', categoria: 'Educación', fecha: days[0], hora: '3:00 PM', cupos_totales: 5, cupos_disponibles: 3 },
+      { titulo: 'Taller de Arte Múltiple', descripcion: 'Pintura y manualidades', categoria: 'Arte', fecha: days[0], hora: '4:30 PM', cupos_totales: 5, cupos_disponibles: 5 },
       { titulo: 'Sesión de Acompañamiento', descripcion: 'Apoyo emocional individual', categoria: 'Psicología', fecha: days[1], hora: '2:00 PM', cupos_totales: 2, cupos_disponibles: 1 },
       { titulo: 'Clase de Guitarra', descripcion: 'Nivel principiante', categoria: 'Arte', fecha: days[2], hora: '3:30 PM', cupos_totales: 4, cupos_disponibles: 4 },
       { titulo: 'Taller de Pintura', descripcion: 'Arte con acuarelas', categoria: 'Arte', fecha: days[3], hora: '4:00 PM', cupos_totales: 5, cupos_disponibles: 5 },
       { titulo: 'Fútbol y Juegos', descripcion: 'Recreación deportiva', categoria: 'Recreación', fecha: days[4], hora: '10:00 AM', cupos_totales: 10, cupos_disponibles: 6 },
       { titulo: 'Creación de Contenido', descripcion: 'Videos y fotografía', categoria: 'Recreación', fecha: days[4], hora: '2:00 PM', cupos_totales: 5, cupos_disponibles: 3 },
+      { titulo: 'Juegos de Mesa', descripcion: 'Juegos cooperativos', categoria: 'Recreación', fecha: days[5], hora: '11:00 AM', cupos_totales: 5, cupos_disponibles: 5 },
     ];
 
     try {

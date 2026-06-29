@@ -4,12 +4,26 @@ import { Search, Clock } from 'lucide-react';
 const CATEGORIAS = ['Tecnología', 'Matemáticas', 'Idiomas', 'Habilidades'];
 
 const VIDEOS = [
-  { id: '1', title: 'Cómo usar Excel desde cero', category: 'Tecnología', duration: '99 min', ytId: 'eZPCVg4Jk00', icon: '📊' },
-  { id: '2', title: 'Formatear tu PC paso a paso', category: 'Tecnología', duration: '35 min', ytId: 'H2QU4p8f16U', icon: '💻' },
-  { id: '3', title: 'Álgebra básica explicada', category: 'Matemáticas', duration: '83 min', ytId: '_6uyQISZvBc', icon: '🔢' },
-  { id: '4', title: 'Inglés conversacional', category: 'Idiomas', duration: '48 min', ytId: 'leqSSYVxa1E', icon: '🗣️' },
-  { id: '5', title: 'Cómo hacer un CV perfecto', category: 'Habilidades', duration: '14 min', ytId: 'toYqGCBi1gM', icon: '📄' },
-  { id: '6', title: 'PowerPoint profesional', category: 'Tecnología', duration: '11 min', ytId: 'aQlTPUvVH5E', icon: '🎨' },
+  { id: '1', title: 'Cómo usar Excel desde cero', category: 'Tecnología', duration: '99 min', ytId: 'eZPCVg4Jk00', image: '/images/excel_course.png' },
+  { id: '2', title: 'Formatear tu PC paso a paso', category: 'Tecnología', duration: '35 min', ytId: 'H2QU4p8f16U', image: '/images/pc_format.png' },
+  { id: '3', title: 'Álgebra básica explicada', category: 'Matemáticas', duration: '83 min', ytId: '_6uyQISZvBc', image: '/images/algebra_course.png' },
+  { id: '4', title: 'Inglés conversacional', category: 'Idiomas', duration: '48 min', ytId: 'leqSSYVxa1E', image: '/images/english_course.png' },
+  { id: '5', title: 'Cómo hacer un CV perfecto', category: 'Habilidades', duration: '14 min', ytId: 'toYqGCBi1gM', image: '/images/cv_course.png' },
+  { id: '6', title: 'PowerPoint profesional', category: 'Tecnología', duration: '11 min', ytId: 'aQlTPUvVH5E', image: '/images/powerpoint_course.png' },
+  { id: '7', title: 'Programación en Python', category: 'Tecnología', duration: '120 min', ytId: 'eZPCVg4Jk00', image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80' },
+  { id: '8', title: 'Matemáticas Financieras', category: 'Matemáticas', duration: '45 min', ytId: '_6uyQISZvBc', image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80' },
+  { id: '9', title: 'Francés para Principiantes', category: 'Idiomas', duration: '60 min', ytId: 'leqSSYVxa1E', image: '/images/french_course.png' },
+  { id: '10', title: 'Liderazgo y Equipos', category: 'Habilidades', duration: '30 min', ytId: 'toYqGCBi1gM', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80' },
+  { id: '11', title: 'Diseño Gráfico Básico', category: 'Tecnología', duration: '55 min', ytId: 'aQlTPUvVH5E', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80' },
+  { id: '12', title: 'Gestión del Tiempo', category: 'Habilidades', duration: '25 min', ytId: 'toYqGCBi1gM', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80' },
+  { id: '13', title: 'Técnicas de Estudio', category: 'Habilidades', duration: '40 min', ytId: 'toYqGCBi1gM', image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&q=80' },
+  { id: '14', title: 'Italiano Básico', category: 'Idiomas', duration: '50 min', ytId: 'leqSSYVxa1E', image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&q=80' },
+  { id: '15', title: 'Física para Todos', category: 'Matemáticas', duration: '75 min', ytId: '_6uyQISZvBc', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80' },
+  { id: '16', title: 'Edición de Video', category: 'Tecnología', duration: '90 min', ytId: 'H2QU4p8f16U', image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&q=80' },
+  { id: '17', title: 'Oratoria y Presentaciones', category: 'Habilidades', duration: '35 min', ytId: 'toYqGCBi1gM', image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&q=80' },
+  { id: '18', title: 'Estadística Básica', category: 'Matemáticas', duration: '65 min', ytId: '_6uyQISZvBc', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80' },
+  { id: '19', title: 'Alemán desde Cero', category: 'Idiomas', duration: '80 min', ytId: 'leqSSYVxa1E', image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=80' },
+  { id: '20', title: 'Marketing Digital', category: 'Tecnología', duration: '110 min', ytId: 'eZPCVg4Jk00', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80' },
 ];
 
 export default function AprendePage() {
@@ -88,9 +102,10 @@ export default function AprendePage() {
                   onClick={() => setPlayingVideo(video.ytId)}
                   className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col"
                 >
-                  <div className="w-full aspect-square bg-[#eef2ff] flex items-center justify-center relative">
-                    <span className="text-6xl drop-shadow-sm">{video.icon}</span>
-                    <div className="absolute bottom-2 right-2 bg-gray-800/70 text-white text-[11px] font-bold px-2 py-1 rounded-md flex items-center gap-1 backdrop-blur-sm">
+                  <div className="w-full aspect-square bg-gray-100 flex items-center justify-center relative overflow-hidden">
+                    <img src={video.image} alt={video.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-2 right-2 bg-gray-900/80 text-white text-[11px] font-bold px-2 py-1 rounded-md flex items-center gap-1 backdrop-blur-md z-10">
                       <Clock className="w-3 h-3" /> {video.duration}
                     </div>
                   </div>

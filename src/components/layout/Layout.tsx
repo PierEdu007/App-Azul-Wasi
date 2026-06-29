@@ -1,8 +1,16 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Calendar, BookOpen, Heart } from 'lucide-react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Calendar, BookOpen, Heart, LogOut } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   // Hide nav on admin pages or login
   const isHidden = location.pathname.startsWith('/admin') || location.pathname === '/login';
@@ -14,6 +22,15 @@ export default function Layout() {
     <div className="bg-gray-100 min-h-screen flex justify-center">
       {/* Mobile container - restricts width on Desktop */}
       <div className="w-full max-w-md bg-white min-h-screen flex flex-col relative shadow-2xl overflow-hidden">
+        
+        {/* Global Logout Button */}
+        <button 
+          onClick={handleLogout}
+          className="absolute top-6 right-5 z-[100] p-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full text-white transition-all shadow-sm border border-white/20 active:scale-95"
+          title="Cerrar Sesión"
+        >
+          <LogOut className="w-5 h-5" strokeWidth={2.5} />
+        </button>
 
 
         {/* Main Content Area - Scrollable */}

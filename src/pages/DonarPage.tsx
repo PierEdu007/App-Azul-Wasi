@@ -103,6 +103,17 @@ export default function DonarPage() {
           </p>
         </div>
 
+        {/* Gallery */}
+        <div className="w-full mt-8">
+          <h3 className="font-heading font-bold text-xl mb-4 text-center text-gray-900">Nuestros Niños</h3>
+          <div className="grid grid-cols-2 gap-3 rounded-2xl overflow-hidden">
+            <img src="/images/img_1831-1.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
+            <img src="/images/img_1706-1.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
+            <img src="/images/img_1800.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
+            <img src="/images/new-edited.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
+          </div>
+        </div>
+
       </div>
     </div>
   );

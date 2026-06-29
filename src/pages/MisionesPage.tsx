@@ -4,6 +4,7 @@ import {
   getMisionesSemana,
   getMisReservas, 
   asumirMision, 
+  seedMisionesMock,
   type Mision, 
   type ReservaMision 
 } from '@/services/misionesService';
@@ -44,8 +45,8 @@ export default function MisionesPage() {
     const monday = new Date(today);
     monday.setDate(today.getDate() + diffToMonday);
 
-    // Generar solo 6 días (Lunes a Sábado)
-    const week = Array.from({ length: 6 }).map((_, i) => {
+    // Generar 7 días (Lunes a Domingo)
+    const week = Array.from({ length: 7 }).map((_, i) => {
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);
       return d;
@@ -78,7 +79,7 @@ export default function MisionesPage() {
     if (!user || weekDates.length === 0) return;
     try {
       const startStr = getLocalDateString(weekDates[0]);
-      const endStr = getLocalDateString(weekDates[5]); // Sábado
+      const endStr = getLocalDateString(weekDates[6]); // Domingo
       
       const [semana, reservas] = await Promise.all([
         getMisionesSemana(startStr, endStr),
@@ -144,6 +145,10 @@ export default function MisionesPage() {
 
   const handleDayClick = (date: Date, dateStr: string) => {
     setSelectedDate(date);
+    if (date.getDay() === 0) {
+      toast('¡El domingo es día libre de descanso familiar!', { icon: '☕' });
+      return;
+    }
     const assumedMisiones = reservasPorFecha.get(dateStr) || [];
     if (assumedMisiones.length > 0) {
       setIsModalOpen(true);
@@ -175,7 +180,13 @@ export default function MisionesPage() {
             let dotContent = '•';
             let iconClass = '';
             
-            if (assumedMisionesHoy.length > 0) {
+            const isSunday = date.getDay() === 0;
+
+            if (isSunday) {
+              bgClass = 'bg-gray-300 text-gray-500';
+              dotContent = '☕';
+              iconClass = 'text-xl';
+            } else if (assumedMisionesHoy.length > 0) {
               const uniqueCategories = new Set(assumedMisionesHoy.map(m => m.categoria));
               
               if (uniqueCategories.size > 1) {
@@ -188,7 +199,7 @@ export default function MisionesPage() {
                 iconClass = assumedMisionesHoy.length > 1 ? '' : 'text-sm';
               }
             } else if ((misionesPorFecha.get(dateStr) || []).length === 0) {
-              // Si no hay misiones disponibles ni asumidas, se puede poner un poco más opaco o dejar igual
+              // Si no hay misiones disponibles ni asumidas
               bgClass = 'bg-azul/50 text-white';
             }
 
@@ -214,7 +225,19 @@ export default function MisionesPage() {
       <div className="px-5">
         <h2 className="font-heading font-bold text-lg mb-4">Misiones Disponibles</h2>
         
-        {misionesHoy.filter(m => !misReservas.some(r => r.mision_id === m.id)).length === 0 ? (
+        {selectedDate.getDay() === 0 ? (
+          <div className="bg-white rounded-3xl p-6 text-center shadow-sm border border-gray-100">
+            <span className="text-5xl block mb-4">☕</span>
+            <p className="text-gray-700 font-bold text-lg mb-1">Los domingos son libres.</p>
+            <p className="text-gray-500 font-medium mb-6">¡Descansa y recarga energías!</p>
+            <div className="grid grid-cols-2 gap-3">
+              <img src="/images/8d7fb520-96e8-47d1-85db-a4cf91b45de4-1.jpg" alt="Recuerdos" className="w-full h-32 object-cover rounded-2xl shadow-sm" />
+              <img src="/images/img_1815-2.webp" alt="Recuerdos" className="w-full h-32 object-cover rounded-2xl shadow-sm" />
+              <img src="/images/img_2047.webp" alt="Recuerdos" className="w-full h-32 object-cover rounded-2xl shadow-sm" />
+              <img src="/images/7426cc79-e8e6-48c9-95cd-e333e1c0a9b8-1.webp" alt="Recuerdos" className="w-full h-32 object-cover rounded-2xl shadow-sm" />
+            </div>
+          </div>
+        ) : misionesHoy.filter(m => !misReservas.some(r => r.mision_id === m.id)).length === 0 ? (
           <div className="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100">
             <p className="text-gray-500 font-medium">No hay misiones disponibles para ti en este día.</p>
           </div>
