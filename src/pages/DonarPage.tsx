@@ -27,9 +27,9 @@ export default function DonarPage() {
           Desde 1 sol puedes ayudar a construir un mejor futuro para los niños del hogar
         </p>
 
-        <div className="w-full space-y-6">
+        <div className="w-full flex flex-col md:flex-row gap-6">
           {/* Yape Card */}
-          <div className="w-full bg-[#faf5ff] border border-purple-100 rounded-3xl p-6 relative shadow-sm">
+          <div className="w-full md:w-1/2 bg-[#faf5ff] border border-purple-100 rounded-3xl p-6 relative shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <span className="font-bold text-xl text-purple-900">Yape</span>
               <span className="bg-purple-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full">Transferencia instantánea</span>
@@ -63,7 +63,7 @@ export default function DonarPage() {
           </div>
 
           {/* Plin Card */}
-          <div className="w-full bg-[#f0fdfa] border border-cyan-100 rounded-3xl p-6 relative shadow-sm">
+          <div className="w-full md:w-1/2 bg-[#f0fdfa] border border-cyan-100 rounded-3xl p-6 relative shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <span className="font-bold text-xl text-cyan-900">Plin</span>
               <span className="bg-[#009fb2] text-white text-[10px] font-bold px-3 py-1.5 rounded-full">Transferencia instantánea</span>
@@ -106,7 +106,7 @@ export default function DonarPage() {
         {/* Gallery */}
         <div className="w-full mt-8">
           <h3 className="font-heading font-bold text-xl mb-4 text-center text-gray-900">Nuestros Niños</h3>
-          <div className="grid grid-cols-2 gap-3 rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 rounded-2xl overflow-hidden">
             <img src="/images/img_1831-1.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
             <img src="/images/img_1706-1.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />
             <img src="/images/img_1800.webp" className="w-full h-32 object-cover rounded-xl shadow-sm" alt="Galería" />

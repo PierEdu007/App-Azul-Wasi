@@ -175,27 +175,24 @@ export default function MisionesPage() {
             const dateStr = getLocalDateString(date);
             const assumedMisionesHoy = reservasPorFecha.get(dateStr) || [];
             
+            const dayNumber = date.getDate();
             let bgClass = 'bg-azul text-white'; // Por defecto todos azules
-            let dotContent = '•';
-            let iconClass = '';
+            let extraIcon = null;
             
             const isSunday = date.getDay() === 0;
 
             if (isSunday) {
-              bgClass = 'bg-gray-300 text-gray-500';
-              dotContent = '☕';
-              iconClass = 'text-xl';
+              bgClass = 'bg-gray-200 text-gray-500';
+              extraIcon = '☕';
             } else if (assumedMisionesHoy.length > 0) {
               const uniqueCategories = new Set(assumedMisionesHoy.map(m => m.categoria));
               
               if (uniqueCategories.size > 1) {
                 bgClass = 'bg-morado text-white';
-                dotContent = '🔥';
-                iconClass = 'text-xl';
+                extraIcon = '✓';
               } else {
                 bgClass = `${misionColors[assumedMisionesHoy[0].categoria].bg} text-white`;
-                dotContent = assumedMisionesHoy.length > 1 ? `+${assumedMisionesHoy.length}` : '✓';
-                iconClass = assumedMisionesHoy.length > 1 ? '' : 'text-sm';
+                extraIcon = '✓';
               }
             } else if ((misionesPorFecha.get(dateStr) || []).length === 0) {
               // Si no hay misiones disponibles ni asumidas
@@ -203,17 +200,20 @@ export default function MisionesPage() {
             }
 
             if (isSelected) {
-              bgClass += ' ring-4 ring-offset-2 ring-gray-300';
+              bgClass += ' ring-4 ring-offset-2 ring-gray-300 scale-105';
             }
 
             return (
               <button
                 key={i}
                 onClick={() => handleDayClick(date, dateStr)}
-                className={`snap-center min-w-[4rem] h-[4.5rem] rounded-2xl flex flex-col items-center justify-center transition-all ${bgClass} shadow-md`}
+                className={`snap-center min-w-[4.5rem] h-[5rem] rounded-2xl flex flex-col items-center justify-center transition-all ${bgClass} shadow-sm relative shrink-0`}
               >
-                <span className="text-xs font-bold">{diasSemana[date.getDay()]}</span>
-                <span className={`font-bold leading-none mt-1 ${iconClass || 'text-lg'}`}>{dotContent}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider opacity-90">{diasSemana[date.getDay()]}</span>
+                <span className="font-bold text-2xl leading-none mt-1">{dayNumber}</span>
+                {extraIcon && (
+                  <span className="absolute top-1.5 right-1.5 text-[10px]">{extraIcon}</span>
+                )}
               </button>
             );
           })}
@@ -241,7 +241,7 @@ export default function MisionesPage() {
             <p className="text-gray-500 font-medium">No hay misiones disponibles para ti en este día.</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {misionesHoy.filter(m => !misReservas.some(r => r.mision_id === m.id)).map((mision) => {
               const colors = misionColors[mision.categoria];
               
