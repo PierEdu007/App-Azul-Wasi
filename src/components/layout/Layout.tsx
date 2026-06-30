@@ -19,9 +19,9 @@ export default function Layout() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="bg-gray-100 min-h-[100dvh] flex justify-center w-full">
+    <div className="bg-gray-100 min-h-[100dvh] w-full flex">
       {/* Responsive container */}
-      <div className="w-full md:max-w-6xl md:flex md:flex-row bg-white min-h-[100dvh] relative shadow-2xl overflow-hidden">
+      <div className="w-full md:flex md:flex-row bg-white min-h-[100dvh] relative overflow-hidden">
         
         {/* Mobile Logout Button (Hidden on Desktop) */}
         <button 
